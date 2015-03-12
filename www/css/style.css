@@ -1,0 +1,23 @@
+/* Empty. Add your own CSS if you like */
+.bar.bar-stable {
+    background: -webkit-linear-gradient(bottom,#262626 0,#353535 100%);
+}
+.bar.bar-stable .title, .bar-stable .button.button-icon, .bar-stable .button.button-clear {
+    color: #fff;
+    text-shadow: -1px 1px 2px #000;
+    font-family: 'Oswald',sans-serif;
+}
+.itemResult img {
+    height: 40px;
+}
+.itemResult {
+    position: relative;
+}
+.itemResult .titleResult {
+    position: absolute;
+    left: 70px;
+    top: 12px;
+}
+.loading {
+    text-align: center;
+}

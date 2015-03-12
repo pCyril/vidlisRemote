@@ -1,0 +1,15 @@
+<ion-view view-title="Résultat de votre recherche">
+    <ion-content>
+        <ion-item ng-show="loading">
+            <div class="loading">Chargement en cours</div>
+        </ion-item>
+        <ion-list>
+            <ion-item ng-repeat="result in resultList">
+                <div class="itemResult" ng-click="launch(result.id.videoId)">
+                    <img src="{{result.snippet.thumbnails.default.url}}">
+                    <div class="titleResult">{{result.snippet.title}}</div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
