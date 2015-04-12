@@ -21,3 +21,107 @@
 .loading {
     text-align: center;
 }
+.currentPlayed {
+    z-index: 2;
+    width: 320px;
+    background-color: #fff;
+    padding-bottom: 35px;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.25);
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    position: relative;
+}
+.currentPlayed .title {
+    font-size: 13px;
+    color: #98a7b8;
+    display: block;
+    font-weight: 600;
+    padding: 5px;
+}
+
+.currentPlayed .counts {
+    position: absolute;
+    bottom: 3px;
+    right: 0px;
+    color: #666;
+    font-size: 85%;
+}
+
+.currentPlayed .counts i {
+    padding-right: 6px;
+}
+
+.currentPlayed .vote {
+    position: absolute;
+    left: 10px;
+    bottom: 26px;
+    height: 2px;
+    width: 300px;
+    border-radius: 4px;
+    background-color: #ccc;
+}
+
+.currentPlayed .vote .like {
+    background-color: #590;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    height: 2px;
+    float: left;
+}
+
+.currentPlayed .counts .likeCount, .currentPlayed .counts .dislikeCount {
+    display: inline-block;
+    float: left;
+    margin: 0 3px;
+}
+
+.scroll-content {
+    background-color: #ecedef;
+}
+
+.buttonsAction {
+    width: 44px;
+    left: 50%;
+    margin-left: -22px;
+    position: absolute;
+    top: 100px;
+}
+.buttonsAction .step-backward, .buttonsAction .step-forward {
+    background: rgba(0, 0, 0, .7);
+    border-radius: 30px;
+    position: absolute;
+    left: 50%;
+    top: 7px;
+    margin-left: -60px;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #F7F7F7;
+    color: #F7F7F7;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.7), 0 0 20px -3px rgba(0, 0, 0, 0.5);
+    text-shadow: 0px 0px 9px #000;
+}
+
+.buttonsAction .step-forward {
+    margin-left: 30px;
+}
+
+.buttonsAction .step-backward i, .buttonsAction .step-forward i {
+    font-size: 13px;
+    position: absolute;
+    left: 50%;
+    top: 5px;
+    margin-left: -4px;
+}
+
+.buttonsAction .btn {
+    background-image: url("../img/buttons.png");
+    width: 44px;
+    height: 44px;
+}
+
+.buttonsAction .btn.pause {
+    background-position: 0px -88px;
+}

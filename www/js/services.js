@@ -1,4 +1,4 @@
-var nodeAppUrl = 'http://localhost:8080/';
+var nodeAppUrl = 'http://37.59.63.129:8080/';
 
 angular.module('services', [])
     .factory('$localstorage', ['$window', function($window) {
@@ -84,4 +84,47 @@ angular.module('services', [])
             }
         };
         return factory;
+    }).factory('VideoInformationService', function($http, $q) {
+        var VideoInformationService = {
+            videoId: '',
+            title: '',
+            channel: '',
+            img: '',
+            like: 0,
+            dislike: 0,
+            percentLike: 0,
+            loaded: false,
+            loading: false,
+            status: 0,
+            getInformation: function(videoId, status) {
+                VideoInformationService.status = status;
+                VideoInformationService.videoId = videoId;
+                VideoInformationService.loaded = false;
+                VideoInformationService.loading = true;
+                var deferred = $q.defer();
+                $http.get("http://vidlis.fr/videoInformationRemote/" + VideoInformationService.videoId)
+                    .success(function(data) {
+                        var item = data.video.items[0];
+                        VideoInformationService.loaded = true;
+                        VideoInformationService.loading = false;
+                        VideoInformationService.title = item.snippet.title;
+                        VideoInformationService.img = item.snippet.thumbnails.medium;
+                        VideoInformationService.channel = item.snippet.channelTitle;
+                        VideoInformationService.like  = new Intl.NumberFormat().format(item.statistics.likeCount);
+                        VideoInformationService.dislike  = new Intl.NumberFormat().format(item.statistics.dislikeCount);
+                        total = item.statistics.likeCount * 1 + item.statistics.dislikeCount * 1;
+                        VideoInformationService.percentLike = item.statistics.likeCount / total * 100;
+                        deferred.resolve();
+                    }).error(function() {
+                        VideoInformationService.loading = false;
+                        VideoInformationService.loaded = true;
+                        deferred.reject('Une erreur est survenue');
+                });
+                return deferred.promise;
+            },
+            setStatus: function(status) {
+                VideoInformationService.status = status;
+            }
+        }
+        return VideoInformationService;
     })

@@ -66,9 +66,38 @@ angular.module('starter.controllers', ['services'])
             console.error('ERR', err);
         });
         $scope.launch = function (videoId) {
-            socket.emit("launchOnScreen", videoId)
+            var item = {
+                videoId: videoId,
+                username: UserService.username
+            };
+            socket.emit("launchOnScreen", item);
         }
     })
-    .controller('CurrentCtrl', function ($scope, $http, socket) {
-
+    .controller('CurrentCtrl', function ($scope, $http, socket, UserService, VideoInformationService) {
+        $scope.videoInformation = VideoInformationService;
+        socket.emit('getVideoLaunchByUserName', UserService.username);
+        socket.on('videoLaunchByUserName', function(user) {
+            if (user.videoId != '') {
+                $scope.videoInformation.getInformation(user.videoId);
+                $scope.videoInformation.setStatus(user.status);
+            }
+        });
+        socket.on('getLaunched', function(user) {
+            if (user.name == UserService.username) {
+                $scope.videoInformation.getInformation(user.videoId);
+                $scope.videoInformation.setStatus(user.status);
+            }
+        });
+        socket.on('userStatusChange', function(user) {
+            if (user.name == UserService.username) {
+                $scope.videoInformation.setStatus(user.status);
+            }
+        });
+        $scope.updateStatus = function(newStatus) {
+            socket.emit('updateUserStatusByRemote', {username: UserService.username, status: newStatus});
+        };
+        $scope.previewNext = function(status) {
+            console.log(status);
+            socket.emit('changeVideoByRemote', {username: UserService.username, status: status});
+        }
     });

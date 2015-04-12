@@ -21,7 +21,7 @@
         <ion-item nav-clear menu-close ng-hide="userService.isLogged()" ng-click="login()">
           Connexion
         </ion-item>
-          <ion-item nav-clear menu-close ng-show="userService.isLogged()">
+          <ion-item nav-clear menu-close ng-show="userService.isLogged()" href="#/app/current">
               {{userService.username}}
           </ion-item>
         <ion-item nav-clear menu-close ng-show="userService.isLogged()" href="#/app/search">

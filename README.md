@@ -16,7 +16,7 @@ pull request and see your brand new functionality deployed almost immediately on
 
 ## Remote App
 
-This project is a mobile web application build with ionic framework. It's a remote allow user to controller vidlis web
+This project is a mobile application build with ionic framework. It's a remote allow user to controller vidlis web
  application to add music in his current playlist.
 Like vidlis web app it's Open-Source so you can fork it ;).
 
