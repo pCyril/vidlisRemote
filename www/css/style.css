@@ -18,9 +18,6 @@
     left: 70px;
     top: 12px;
 }
-.loading {
-    text-align: center;
-}
 
 .suggestionsTitle, .currentPlayed, .videoAdded, .suggest, .loading, .noVideo {
     z-index: 2;
@@ -40,7 +37,7 @@
     color: #98a7b8;
 }
 
-.noVideo {
+.paddingMenuTop {
     margin-top: 25px !important;
 }
 

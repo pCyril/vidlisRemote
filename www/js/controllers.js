@@ -52,12 +52,13 @@ angular.module('starter.controllers', ['services'])
             }
         }
     })
-    .controller('SearchResultCtrl', function($scope, $state, $stateParams, $http, socket, userService){
+    .controller('SearchResultCtrl', function($scope, $state, $stateParams, $http, socket, userService, $timeout, $ionicScrollDelegate){
         if (!userService.isLogged()) {
             $state.go('app.current');
         }
         $scope.resultList = [];
         $scope.loading = true;
+        $scope.videoAdded = false;
         $scope.searchValue = $stateParams.searchValue;
         $http.get('http://vidlis.fr/searchRemote/' + $stateParams.searchValue).then(function(resp) {
             $scope.loading = false;
@@ -71,7 +72,13 @@ angular.module('starter.controllers', ['services'])
                 username: userService.username
             };
             socket.emit("launchOnScreen", item);
-            $state.go('app.current');
+            $scope.videoAdded = true;
+            $ionicScrollDelegate.scrollTop();
+            $timeout(function(){
+                $scope.videoAdded = false;
+                $state.go('app.current');
+            }, 2000);
+
         };
     })
     .controller('CurrentCtrl', function ($scope, $http, socket, userService, VideoInformationService, videoSuggestService, $timeout, $ionicScrollDelegate) {
