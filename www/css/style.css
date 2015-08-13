@@ -21,20 +21,33 @@
 .loading {
     text-align: center;
 }
-.currentPlayed {
+
+.suggestionsTitle, .currentPlayed, .videoAdded, .suggest, .loading, .noVideo {
     z-index: 2;
     width: 320px;
-    background-color: #fff;
-    padding-bottom: 35px;
-    border-radius: 3px;
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.25);
-    cursor: pointer;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
     position: relative;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.25);
 }
-.currentPlayed .title {
+
+.suggestionsTitle, .videoAdded, .loading, .noVideo {
+    padding: 15px;
+    text-align: center;
+    color: #98a7b8;
+}
+
+.noVideo {
+    margin-top: 25px !important;
+}
+
+.currentPlayed, .suggest {
+    padding-bottom: 35px;
+}
+.currentPlayed .title, .suggest .title {
     font-size: 13px;
     color: #98a7b8;
     display: block;
@@ -83,6 +96,7 @@
 }
 
 .buttonsAction {
+    cursor: pointer;
     width: 44px;
     left: 50%;
     margin-left: -22px;

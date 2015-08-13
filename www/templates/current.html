@@ -1,29 +1,39 @@
-<ion-view view-title="Home">
+<ion-view view-title="Vidlis">
     <ion-content>
         <div ng-hide="videoInformation.loaded || videoInformation.loading">
-            Home
+            <h3 class="noVideo">Pas de lecture en cours</h3>
         </div>
-        <ion-item ng-show="videoInformation.loading">
-            <div class="loading">Chargement en cours</div>
-        </ion-item>
-        <div ng-show="videoInformation.loaded" class="currentPlayed">
-            <div class="title">{{videoInformation.title}}</div>
-            <img src="{{videoInformation.img.url}}">
-            <div class="vote"><div class="like" style="width: {{videoInformation.percentLike}}%"></div></div>
-            <div class="counts">
-                <div class="likeCount"><i class="fa fa-thumbs-up"></i>{{videoInformation.like}}</div>
-                <div class="dislikeCount"><i class="fa fa-thumbs-down"></i>{{videoInformation.dislike}}</div>
+        <h3 class="videoAdded" ng-show="videoAdded">Vidéo ajoutée</h3>
+        <h3 class="loading" ng-show="videoInformation.loading">Chargement en cours</h3>
+        <div ng-show="videoInformation.loaded">
+            <div class="currentPlayed">
+                <div class="title">{{videoInformation.title}}</div>
+                <img src="{{videoInformation.img.url}}">
+                <div class="vote"><div class="like" style="width: {{videoInformation.percentLike}}%"></div></div>
+                <div class="counts">
+                    <div class="likeCount"><i class="fa fa-thumbs-up"></i>{{videoInformation.like}}</div>
+                    <div class="dislikeCount"><i class="fa fa-thumbs-down"></i>{{videoInformation.dislike}}</div>
+                </div>
+                <div class="buttonsAction">
+                    <div class="step-backward" ng-click="previewNext(0)">
+                        <i class="fa fa-step-backward"></i>
+                    </div>
+                    <div>
+                        <div class="play btn" ng-hide="videoInformation.status == 1" ng-click="updateStatus(1)"></div>
+                        <div class="pause btn" ng-show="videoInformation.status == 1" ng-click="updateStatus(2)"></div>
+                    </div>
+                    <div class="step-forward" ng-click="previewNext(1)">
+                        <i class="fa fa-step-forward"></i>
+                    </div>
+                </div>
             </div>
-            <div class="buttonsAction">
-                <div class="step-backward">
-                    <i class="fa fa-step-backward" ng-click="previewNext(0)"></i>
-                </div>
-                <div>
-                    <div class="play btn" ng-hide="videoInformation.status == 1" ng-click="updateStatus(1)"></div>
-                    <div class="pause btn" ng-show="videoInformation.status == 1" ng-click="updateStatus(2)"></div>
-                </div>
-                <div class="step-forward">
-                    <i class="fa fa-step-forward" ng-click="previewNext(1)"></i>
+            <h3 class="suggestionsTitle">
+                Suggestions
+            </h3>
+            <div ng-show="videoSuggest.loaded">
+                <div class="currentPlayed" ng-repeat="suggest in videoSuggest.suggests" ng-click="launch(suggest.id.videoId)">
+                    <div class="title">{{suggest.snippet.title}}</div>
+                    <img src="{{suggest.snippet.thumbnails.medium.url}}">
                 </div>
             </div>
         </div>

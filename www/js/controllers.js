@@ -1,8 +1,8 @@
 angular.module('starter.controllers', ['services'])
 
-    .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $state, $http, UserService, $ionicPopup) {
-        UserService.reconnect();
-        $scope.userService = UserService;
+    .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $state, $http, userService, $ionicPopup) {
+        userService.reconnect();
+        $scope.userService = userService;
 
         // Create the login modal that we will use later
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -34,8 +34,8 @@ angular.module('starter.controllers', ['services'])
         };
     })
 
-    .controller('SearchCtrl', function ($scope, $state, UserService, $ionicPopup) {
-        if (!UserService.isLogged()) {
+    .controller('SearchCtrl', function ($scope, $state, userService, $ionicPopup) {
+        if (!userService.isLogged()) {
             $state.go('app.current');
         }
         $scope.search = {
@@ -52,8 +52,8 @@ angular.module('starter.controllers', ['services'])
             }
         }
     })
-    .controller('SearchResultCtrl', function($scope, $stateParams, $http, socket, UserService){
-        if (!UserService.isLogged()) {
+    .controller('SearchResultCtrl', function($scope, $state, $stateParams, $http, socket, userService){
+        if (!userService.isLogged()) {
             $state.go('app.current');
         }
         $scope.resultList = [];
@@ -68,36 +68,50 @@ angular.module('starter.controllers', ['services'])
         $scope.launch = function (videoId) {
             var item = {
                 videoId: videoId,
-                username: UserService.username
+                username: userService.username
             };
             socket.emit("launchOnScreen", item);
-        }
+            $state.go('app.current');
+        };
     })
-    .controller('CurrentCtrl', function ($scope, $http, socket, UserService, VideoInformationService) {
+    .controller('CurrentCtrl', function ($scope, $http, socket, userService, VideoInformationService, videoSuggestService, $timeout, $ionicScrollDelegate) {
         $scope.videoInformation = VideoInformationService;
-        socket.emit('getVideoLaunchByUserName', UserService.username);
+        $scope.videoSuggest = videoSuggestService;
+        $scope.videoAdded = false;
+        socket.emit('getVideoLaunchByUserName', userService.username);
         socket.on('videoLaunchByUserName', function(user) {
             if (user.videoId != '') {
                 $scope.videoInformation.getInformation(user.videoId);
                 $scope.videoInformation.setStatus(user.status);
+                $scope.videoSuggest.getSuggests(user.videoId);
             }
         });
         socket.on('getLaunched', function(user) {
-            if (user.name == UserService.username) {
+            if (user.name == userService.username) {
                 $scope.videoInformation.getInformation(user.videoId);
                 $scope.videoInformation.setStatus(user.status);
+                $scope.videoSuggest.getSuggests(user.videoId);
             }
         });
         socket.on('userStatusChange', function(user) {
-            if (user.name == UserService.username) {
+            if (user.name == userService.username) {
                 $scope.videoInformation.setStatus(user.status);
             }
         });
         $scope.updateStatus = function(newStatus) {
-            socket.emit('updateUserStatusByRemote', {username: UserService.username, status: newStatus});
+            socket.emit('updateUserStatusByRemote', {username: userService.username, status: newStatus});
         };
         $scope.previewNext = function(status) {
-            console.log(status);
-            socket.emit('changeVideoByRemote', {username: UserService.username, status: status});
-        }
+            socket.emit('changeVideoByRemote', {username: userService.username, status: status});
+        };
+        $scope.launch = function (videoId) {
+            var item = {
+                videoId: videoId,
+                username: userService.username
+            };
+            socket.emit("launchOnScreen", item);
+            $scope.videoAdded = true;
+            $ionicScrollDelegate.scrollTop();
+            $timeout(function(){ $scope.videoAdded = false; }, 2000);
+        };
     });

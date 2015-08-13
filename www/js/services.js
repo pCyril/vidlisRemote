@@ -39,7 +39,7 @@ angular.module('services', [])
                 })
             }
         };
-    }).factory('UserService', function($http, $q, $localstorage) {
+    }).factory('userService', function($http, $q, $localstorage) {
         var factory = {
             username: '',
             password: '',
@@ -125,6 +125,32 @@ angular.module('services', [])
             setStatus: function(status) {
                 VideoInformationService.status = status;
             }
-        }
+        };
         return VideoInformationService;
-    })
+    }).factory('videoSuggestService', function($http, $q) {
+        var videoSuggestService = {
+            videoId: '',
+            suggests: [],
+            loaded: false,
+            loading: false,
+            getSuggests: function(videoId) {
+                videoSuggestService.videoId = videoId;
+                videoSuggestService.loaded = false;
+                videoSuggestService.loading = true;
+                var deferred = $q.defer();
+                $http.get("http://vidlis.fr/getSuggestionRemote/" + videoSuggestService.videoId)
+                    .success(function(data) {
+                        videoSuggestService.suggests = data.items;
+                        videoSuggestService.loaded = true;
+                        videoSuggestService.loading = false;
+                        deferred.resolve();
+                    }).error(function() {
+                        videoSuggestService.loading = false;
+                        videoSuggestService.loaded = true;
+                        deferred.reject('Une erreur est survenue');
+                    });
+                return deferred.promise;
+            }
+        };
+        return videoSuggestService;
+    });
