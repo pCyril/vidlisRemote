@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['services'])
 
-    .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $state, $http, userService, $ionicPopup) {
+    .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $state, $http, userService, $ionicPopup, socket) {
         userService.reconnect();
         $scope.userService = userService;
 
@@ -24,6 +24,7 @@ angular.module('starter.controllers', ['services'])
         $scope.doLogin = function () {
             $scope.userService.login().then(function () {
                 $scope.closeLogin();
+                socket.emit('getVideoLaunchByUserName', $scope.userService.username);
                 $state.go('app.current');
             }, function (msg) {
                 $ionicPopup.alert({
@@ -34,14 +35,8 @@ angular.module('starter.controllers', ['services'])
         };
 
         $scope.logout = function () {
-            $scope.userService.logOut().then(function () {
-                $state.go('app.current');
-            }, function (msg) {
-                $ionicPopup.alert({
-                    title: 'Erreur',
-                    template: msg
-                });
-            });
+            $scope.userService.logOut();
+            $state.go('app.current');
         };
     })
 
@@ -97,18 +92,15 @@ angular.module('starter.controllers', ['services'])
         $scope.videoSuggest = videoSuggestService;
         $scope.videoAdded = false;
 
-        if(!userService.isLogged()) {
-            return;
+        if(userService.isLogged()) {
+            socket.emit('getVideoLaunchByUserName', userService.username);
         }
-
-        socket.emit('getVideoLaunchByUserName', userService.username);
 
         socket.on('videoLaunchByUserName', function(user) {
             if (user.videoId != '') {
                 $scope.videoInformation.getInformation(user.videoId);
                 $scope.videoInformation.setStatus(user.status);
                 $scope.videoSuggest.getSuggests(user.videoId);
-                userService.updateNextPreview();
             }
         });
         socket.on('getLaunched', function(user) {
@@ -116,20 +108,17 @@ angular.module('starter.controllers', ['services'])
                 $scope.videoInformation.getInformation(user.videoId);
                 $scope.videoInformation.setStatus(user.status);
                 $scope.videoSuggest.getSuggests(user.videoId);
-                userService.updateNextPreview();
             }
         });
         socket.on('userStatusChange', function(user) {
             if (user.name == userService.username) {
                 $scope.videoInformation.setStatus(user.status);
-                userService.updateNextPreview();
             }
         });
         socket.on('userUpdated', function(user) {
             if (user.name == userService.username) {
                 userService.playlist = user.playlist;
                 userService.currentPlayedIndex = new Intl.NumberFormat().format(user.currentPlayedIndex);
-                userService.updateNextPreview();
             }
         });
         $scope.doRefresh = function () {

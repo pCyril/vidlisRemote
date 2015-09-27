@@ -80,6 +80,8 @@ angular.module('services', [])
             logOut: function() {
                 factory.isLog = false;
                 factory.username = '';
+                $localstorage.set('username', '');
+                $localstorage.set('password', '');
                 return true;
             }
         };
