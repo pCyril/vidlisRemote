@@ -19,6 +19,23 @@
     top: 12px;
 }
 
+.btn-login {
+    z-index: 2;
+    width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    position: relative;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.25);
+    text-align: center;
+    padding: 15px;
+    font-size: 24px;
+    border-color: #0c63ee;
+    background-color: #387ef5;
+    color: #fff;
+}
+
 .suggestionsTitle, .currentPlayed, .videoAdded, .suggest, .loading, .noVideo {
     z-index: 2;
     width: 320px;
@@ -105,9 +122,9 @@
     border-radius: 30px;
     position: absolute;
     left: 50%;
-    top: 7px;
-    margin-left: -60px;
-    width: 30px;
+    top: 15px;
+    margin-left: -100px;
+    width: 60px;
     height: 30px;
     border: 3px solid #F7F7F7;
     color: #F7F7F7;
@@ -116,7 +133,7 @@
 }
 
 .buttonsAction .step-forward {
-    margin-left: 30px;
+    margin-left: 37px;
 }
 
 .buttonsAction .step-backward i, .buttonsAction .step-forward i {
@@ -128,11 +145,29 @@
 }
 
 .buttonsAction .btn {
-    background-image: url("../img/buttons.png");
-    width: 44px;
-    height: 44px;
+    background: rgba(0, 0, 0, .7);
+    border-radius: 60px;
+    position: absolute;
+    left: 50%;
+    top: 0px;
+    margin-left: -30px;
+    border: 3px solid #F7F7F7;
+    color: #F7F7F7;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.7), 0 0 20px -3px rgba(0, 0, 0, 0.5);
+    text-shadow: 0px 0px 9px #000;
+    width: 60px;
+    height: 60px;
 }
 
-.buttonsAction .btn.pause {
-    background-position: 0px -88px;
+.buttonsAction .btn i {
+    font-size: 26px;
+    position: absolute;
+    left: 50%;
+    top: 15px;
+    margin-left: -11px;
+}
+
+
+.buttonsAction .btn.play i {
+    margin-left: -8px;
 }
