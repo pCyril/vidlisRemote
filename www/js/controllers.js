@@ -117,8 +117,9 @@ angular.module('starter.controllers', ['services'])
         });
         socket.on('userUpdated', function(user) {
             if (user.name == userService.username) {
-                userService.playlist = user.playlist;
-                userService.currentPlayedIndex = new Intl.NumberFormat().format(user.currentPlayedIndex);
+                $scope.videoInformation.getInformation(user.videoId);
+                $scope.videoInformation.setStatus(user.status);
+                $scope.videoSuggest.getSuggests(user.videoId);
             }
         });
         $scope.doRefresh = function () {
