@@ -55,10 +55,10 @@
                 </h3>
                 <div class="list card" ng-repeat="suggest in videoSuggest.suggests" ng-click="launch(suggest.id.videoId)" ng-show="videoSuggest.loaded">
 
-                    <a class="item item-avatar" href="#/app/playlist/{{ playlist.id }}">
+                    <div class="item item-avatar">
                         <h2>{{suggest.snippet.title}}</h2>
                         <p>{{suggest.snippet.channelTitle}}</p>
-                    </a>
+                    </div>
 
                     <div class="item item-image">
                         <img src="{{suggest.snippet.thumbnails.medium.url}}">
