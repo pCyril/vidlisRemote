@@ -142,4 +142,77 @@ angular.module('starter.controllers', ['services'])
             $ionicScrollDelegate.scrollTop();
             $timeout(function(){ $scope.videoAdded = false; }, 2000);
         };
+    })
+
+    .controller('PlaylistsCtrl', function($scope, $http, userService, socket) {
+
+        $scope.playlists = [];
+        $scope.loading = true;
+
+        $http.get('http://vidlis.fr/playListsRemote/' + userService.username).then(function(response) {
+            $scope.loading = false;
+            $scope.playlists = response.data;
+        });
+
+        $scope.date = function(dateString) {
+            date = new Date(dateString);
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        };
+
+        $scope.getFirstImg = function(items) {
+            if (items.length == 0) { return 'https://i.ytimg.com/vi/mqdefault.jpg'}
+
+            return "https://i.ytimg.com/vi/" + items[0].idVideo + "/mqdefault.jpg";
+        };
+
+        $scope.play = function(items) {
+            if (items.length == 0) { return }
+            for (i = 0; i <= items.length; i++) {
+                var item = {
+                    videoId: items[i].idVideo,
+                    username: userService.username
+                };
+                socket.emit("launchOnScreen", item);
+            }
+        };
+
+    })
+    .controller('PlaylistDetailCtrl', function($scope, $stateParams, $http, userService, socket, $ionicScrollDelegate, $timeout) {
+
+        $scope.playlist = {
+            name: '',
+            items: []
+        };
+        $scope.videoAdded = false;
+        $scope.loading = true;
+
+        $http.get('http://vidlis.fr/playListRemote/' + $stateParams.idPlaylist + '/' + userService.username).then(function(response) {
+            $scope.playlist = response.data;
+            $scope.loading = false;
+        });
+
+        $scope.date = function(dateString) {
+            date = new Date(dateString);
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        };
+
+        $scope.getFirstImg = function(items) {
+            if (items.length == 0) { return 'https://i.ytimg.com/vi/mqdefault.jpg'}
+            return "https://i.ytimg.com/vi/" + items[0].idVideo + "/hqdefault.jpg";
+        };
+
+        $scope.launch = function (videoId) {
+            var item = {
+                videoId: videoId,
+                username: userService.username
+            };
+            socket.emit("launchOnScreen", item);
+            $scope.videoAdded = true;
+            $ionicScrollDelegate.scrollTop();
+            $timeout(function(){
+                $scope.videoAdded = false;
+            }, 2000);
+
+        };
+
     });

@@ -14,9 +14,18 @@
             <h3 class="videoAdded" ng-show="videoAdded">Vidéo ajoutée</h3>
             <h3 class="loading" ng-show="videoInformation.loading">Chargement en cours</h3>
             <div ng-show="videoInformation.loaded">
-                <div class="currentPlayed">
-                    <div class="title">{{videoInformation.title}}</div>
-                    <img src="{{videoInformation.img.url}}">
+
+                <div class="list card currentPlayed">
+
+                    <div class="item item-avatar">
+                        <h2>{{videoInformation.title}}</h2>
+                        <p>{{videoInformation.channel}}</p>
+                    </div>
+
+                    <div class="item item-image">
+                        <img src="{{videoInformation.img.url}}">
+                    </div>
+
                     <div class="vote"><div class="like" style="width: {{videoInformation.percentLike}}%"></div></div>
                     <div class="counts">
                         <div class="likeCount"><i class="fa fa-thumbs-up"></i>{{videoInformation.like}}</div>
@@ -38,13 +47,20 @@
                             <i class="fa fa-step-forward"></i>
                         </div>
                     </div>
+
                 </div>
+
                 <h3 class="suggestionsTitle">
                     Suggestions
                 </h3>
-                <div ng-show="videoSuggest.loaded">
-                    <div class="suggest" ng-repeat="suggest in videoSuggest.suggests" ng-click="launch(suggest.id.videoId)">
-                        <div class="title">{{suggest.snippet.title}}</div>
+                <div class="list card" ng-repeat="suggest in videoSuggest.suggests" ng-click="launch(suggest.id.videoId)" ng-show="videoSuggest.loaded">
+
+                    <a class="item item-avatar" href="#/app/playlist/{{ playlist.id }}">
+                        <h2>{{suggest.snippet.title}}</h2>
+                        <p>{{suggest.snippet.channelTitle}}</p>
+                    </a>
+
+                    <div class="item item-image">
                         <img src="{{suggest.snippet.thumbnails.medium.url}}">
                     </div>
                 </div>

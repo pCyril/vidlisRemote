@@ -33,7 +33,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
             .state('app.search', {
                 url: "/search",
                 views: {
-                    'menuContent': {
+                    'mainContent': {
                         templateUrl: "templates/search.html",
                         controller: "SearchCtrl"
                     }
@@ -43,7 +43,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
             .state('app.searchResult', {
                 url: "/search/:searchValue",
                 views: {
-                    'menuContent': {
+                    'mainContent': {
                         templateUrl: "templates/searchResult.html",
                         controller: "SearchResultCtrl"
                     }
@@ -53,12 +53,31 @@ angular.module('starter', ['ionic', 'starter.controllers'])
             .state('app.current', {
                 url: "/current",
                 views: {
-                    'menuContent': {
+                    'mainContent': {
                         templateUrl: "templates/current.html",
                         controller: "CurrentCtrl"
                     }
                 }
+            })
+
+            .state('app.playlists', {
+                url: "/playlists",
+                views: {
+                    'mainContent': {
+                        templateUrl: "templates/playlists.html",
+                        controller: "PlaylistsCtrl"
+                    }
+                }
+            })
+
+            .state('app.playlistDetail', {
+                url: "/playlist/:idPlaylist",
+                views: {
+                    'mainContent': {
+                        templateUrl: "templates/playlist.detail.html",
+                        controller: "PlaylistDetailCtrl"
+                    }
+                }
             });
-        // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/current');
     });
