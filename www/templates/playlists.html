@@ -1,0 +1,24 @@
+<ion-view view-title="Mes playlists">
+    <ion-content>
+        <h3 class="loading" ng-show="loading">Chargement en cours</h3>
+        <div class="list card" ng-repeat="playlist in playlists" ng-hide="loading">
+
+            <a class="item item-avatar" href="#/app/playlist/{{ playlist.id }}">
+                <h2>{{ playlist.name }}</h2>
+                <p>{{ date(playlist.creationDate.date) }}</p>
+            </a>
+
+            <div class="item item-image">
+                <a href="#/app/playlist/{{ playlist.id }}">
+                    <img src="{{ getFirstImg(playlist.items) }}">
+                </a>
+            </div>
+
+            <a class="item item-icon-left assertive" ng-click="play(playlist.items)" href="#">
+                <i class="icon ion-music-note"></i>
+                Ecouter la playlist
+            </a>
+
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['services'])
 
-    .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $state, $http, userService, $ionicPopup, socket) {
+    .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $state, $http, userService, $ionicPopup, socket, $ionicScrollDelegate) {
         userService.reconnect();
         $scope.userService = userService;
 
@@ -38,6 +38,31 @@ angular.module('starter.controllers', ['services'])
             $scope.userService.logOut();
             $state.go('app.current');
         };
+
+        $scope.launch = function (videoId) {
+            var item = {
+                videoId: videoId,
+                username: userService.username
+            };
+            socket.emit("launchOnScreen", item);
+            $scope.videoAdded = true;
+            $ionicScrollDelegate.scrollTop();
+            $timeout(function(){
+                $scope.videoAdded = false;
+                $state.go('app.current');
+            }, 2000);
+        };
+
+        $scope.date = function(dateString) {
+            date = new Date(dateString);
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        };
+
+        $scope.getFirstImg = function(items) {
+            if (items.length == 0) { return 'https://i.ytimg.com/vi/mqdefault.jpg'}
+            return "https://i.ytimg.com/vi/" + items[0].idVideo + "/hqdefault.jpg";
+        };
+
     })
 
     .controller('SearchCtrl', function ($scope, $state, userService, $ionicPopup) {
@@ -58,7 +83,7 @@ angular.module('starter.controllers', ['services'])
             }
         }
     })
-    .controller('SearchResultCtrl', function($scope, $state, $stateParams, $http, socket, userService, $timeout, $ionicScrollDelegate){
+    .controller('SearchResultCtrl', function($scope, $state, $stateParams, $http, socket, userService){
         if (!userService.isLogged()) {
             $state.go('app.current');
         }
@@ -72,22 +97,8 @@ angular.module('starter.controllers', ['services'])
         }, function(err) {
             console.error('ERR', err);
         });
-        $scope.launch = function (videoId) {
-            var item = {
-                videoId: videoId,
-                username: userService.username
-            };
-            socket.emit("launchOnScreen", item);
-            $scope.videoAdded = true;
-            $ionicScrollDelegate.scrollTop();
-            $timeout(function(){
-                $scope.videoAdded = false;
-                $state.go('app.current');
-            }, 2000);
-
-        };
     })
-    .controller('CurrentCtrl', function ($scope, $http, socket, userService, VideoInformationService, videoSuggestService, $timeout, $ionicScrollDelegate) {
+    .controller('CurrentCtrl', function ($scope, $http, socket, userService, VideoInformationService, videoSuggestService) {
         $scope.videoInformation = VideoInformationService;
         $scope.videoSuggest = videoSuggestService;
         $scope.videoAdded = false;
@@ -132,20 +143,9 @@ angular.module('starter.controllers', ['services'])
         $scope.previewNext = function(status) {
             socket.emit('changeVideoByRemote', {username: userService.username, status: status});
         };
-        $scope.launch = function (videoId) {
-            var item = {
-                videoId: videoId,
-                username: userService.username
-            };
-            socket.emit("launchOnScreen", item);
-            $scope.videoAdded = true;
-            $ionicScrollDelegate.scrollTop();
-            $timeout(function(){ $scope.videoAdded = false; }, 2000);
-        };
     })
 
     .controller('PlaylistsCtrl', function($scope, $http, userService, socket) {
-
         $scope.playlists = [];
         $scope.loading = true;
 
@@ -153,17 +153,6 @@ angular.module('starter.controllers', ['services'])
             $scope.loading = false;
             $scope.playlists = response.data;
         });
-
-        $scope.date = function(dateString) {
-            date = new Date(dateString);
-            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-        };
-
-        $scope.getFirstImg = function(items) {
-            if (items.length == 0) { return 'https://i.ytimg.com/vi/mqdefault.jpg'}
-
-            return "https://i.ytimg.com/vi/" + items[0].idVideo + "/mqdefault.jpg";
-        };
 
         $scope.play = function(items) {
             if (items.length == 0) { return }
@@ -175,10 +164,8 @@ angular.module('starter.controllers', ['services'])
                 socket.emit("launchOnScreen", item);
             }
         };
-
     })
-    .controller('PlaylistDetailCtrl', function($scope, $stateParams, $http, userService, socket, $ionicScrollDelegate, $timeout) {
-
+    .controller('PlaylistDetailCtrl', function($scope, $stateParams, $http, userService) {
         $scope.playlist = {
             name: '',
             items: []
@@ -190,29 +177,4 @@ angular.module('starter.controllers', ['services'])
             $scope.playlist = response.data;
             $scope.loading = false;
         });
-
-        $scope.date = function(dateString) {
-            date = new Date(dateString);
-            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-        };
-
-        $scope.getFirstImg = function(items) {
-            if (items.length == 0) { return 'https://i.ytimg.com/vi/mqdefault.jpg'}
-            return "https://i.ytimg.com/vi/" + items[0].idVideo + "/hqdefault.jpg";
-        };
-
-        $scope.launch = function (videoId) {
-            var item = {
-                videoId: videoId,
-                username: userService.username
-            };
-            socket.emit("launchOnScreen", item);
-            $scope.videoAdded = true;
-            $ionicScrollDelegate.scrollTop();
-            $timeout(function(){
-                $scope.videoAdded = false;
-            }, 2000);
-
-        };
-
     });

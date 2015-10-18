@@ -54,8 +54,12 @@
     color: #98a7b8;
 }
 
-h3.videoAdded, h3.loading {
+h3.loading {
     margin-top: 20px;
+}
+
+h3.videoAdded{
+    margin-top: 53px;
 }
 
 .paddingMenuTop {
@@ -109,7 +113,7 @@ h3.videoAdded, h3.loading {
     margin: 0 3px;
 }
 
-.scroll-content {
+.scroll-content, ion-view.pane, .menu-content.pane {
     background-color: #ecedef;
 }
 

@@ -1,0 +1,20 @@
+<ion-view view-title="Playlist">
+    <ion-content>
+        <h3 class="loading" ng-show="loading">Chargement en cours</h3>
+        <div class="list card" ng-hide="loading">
+
+            <div class="item item-avatar">
+                <h2>{{ playlist.name }}</h2>
+                <p>{{ date(playlist.creationDate.date) }}</p>
+            </div>
+
+            <div class="item item-image">
+                <img src="{{ getFirstImg(playlist.items) }}">
+            </div>
+
+            <a href="#" class="item item-icon-left" ng-click="launch(item.idVideo)" ng-repeat="item in playlist.items">
+                {{ item.videoName }}
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

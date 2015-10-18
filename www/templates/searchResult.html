@@ -1,7 +1,6 @@
 <ion-view view-title="Résultat de votre recherche">
     <ion-content>
         <h3 class="loading paddingMenuTop" ng-show="loading">Chargement en cours</h3>
-        <h3 class="videoAdded" ng-show="videoAdded">Vidéo ajoutée</h3>
         <ion-list>
             <ion-item ng-repeat="result in resultList">
                 <div class="itemResult" ng-click="launch(result.id.videoId)">
